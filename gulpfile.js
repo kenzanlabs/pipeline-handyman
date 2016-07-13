@@ -2,15 +2,7 @@
 
 var gulp = require('gulp');
 var validatePipeline = require('pipeline-validate-js');
-var testPipeline = require('pipeline-test-node')({
-  plugins: {
-    istanbul: {
-      thresholds: {
-        global: 80
-      }
-    }
-  }
-});
+var testPipeline = require('pipeline-test-node');
 
 var config = {
   jsFiles: [

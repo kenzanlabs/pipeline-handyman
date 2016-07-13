@@ -42,8 +42,8 @@
   },
   "devDependencies": {
     "chai": "3.4.0",
-    "pipeline-test-node": "0.4.1",
-    "pipeline-validate-js": "1.0.0-rc",
+    "pipeline-test-node": "1.0.1",
+    "pipeline-validate-js": "1.0.0-rc3",
     "sinon": "1.17.2"
   }
 }
