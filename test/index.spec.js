@@ -1,4 +1,5 @@
-/* jshint -W030 */
+/* eslint max-depth: ["error", 10] max-nested-callbacks: ["error", 10] */
+
 'use strict';
 
 var chai = require('chai');
@@ -51,11 +52,35 @@ describe('gulp-handyman', function () {
 
       it('should pass options to del.sync method', function () {
         var spy = sinon.spy(del, 'sync');
-        var opts = {dryRun: true};
+        var opts = { dryRun: true };
 
-        handyman.cleanSync([dir], {dryRun: true});
+        handyman.cleanSync([dir], { dryRun: true });
 
         expect(spy).to.have.been.calledWith(sinon.match.array, opts);
+      });
+
+    });
+
+    describe('clean method', function () {
+
+      it('should expose a clean method', function () {
+        expect(handyman.clean).to.exist;
+      });
+
+      it('should return a Promise object', function () {
+        var result = handyman.clean([dir]);
+
+        expect(result.then).to.exist;
+        expect(result.then).to.be.a('function');
+      });
+
+      it('should delete the path passed as a param', function (done) {
+        handyman.clean([dir])
+          .then(function () {
+            expect(fs.existsSync(dir)).to.be.false;
+            done();
+
+          });
       });
 
     });

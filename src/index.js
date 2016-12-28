@@ -7,12 +7,17 @@ var fs = require('fs');
 var util = require('gulp-util');
 
 module.exports = {
+  clean: clean,
   cleanSync: cleanSync,
   getPackageName: getPackageName,
   log: log,
   mergeConfig: mergeConfig,
   slugify: slugify
 };
+
+function clean (path, options) {
+  return del(path, options);
+}
 
 function cleanSync(path, options) {
   return del.sync(path, options);
