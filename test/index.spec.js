@@ -1,24 +1,65 @@
 /* jshint -W030 */
 'use strict';
 
-var expect = require('chai').expect;
+var chai = require('chai');
+var expect = chai.expect;
 var fs = require('fs');
 var handyman = require('../');
 var packageName = require('../package.json').name;
 var sinon = require('sinon');
+var sinonChai = require('sinon-chai');
 var util = require('gulp-util');
+var del = require('del');
+
+chai.use(sinonChai);
 
 describe('gulp-handyman', function () {
 
-  describe('clean', function () {
-    it('should delete the path passed as a param', function () {
-      var dir = './tmp';
+  describe('clean directories', function () {
+    var dir = './tmp';
 
-      fs.mkdirSync(dir);
-      handyman.clean([dir], null, true);
-
-      expect(fs.existsSync(dir)).to.be.false;
+    beforeEach(function () {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+      }
     });
+
+    afterEach(function () {
+      if (fs.existsSync(dir)) {
+        del.sync(dir);
+      }
+    });
+
+    describe('cleanSync method', function () {
+
+      it('should expose a cleanSync method', function () {
+        expect(handyman.cleanSync).to.exist;
+      });
+
+      it('should return an array of deleted directories/files', function () {
+        var result = handyman.cleanSync([dir]);
+
+        expect(result).to.be.an.array;
+        expect(result[0]).to.contain('tmp');
+      });
+
+      it('should delete the path passed as a param', function () {
+        handyman.cleanSync([dir]);
+
+        expect(fs.existsSync(dir)).to.be.false;
+      });
+
+      it('should pass options to del.sync method', function () {
+        var spy = sinon.spy(del, 'sync');
+        var opts = {dryRun: true};
+
+        handyman.cleanSync([dir], {dryRun: true});
+
+        expect(spy).to.have.been.calledWith(sinon.match.array, opts);
+      });
+
+    });
+
   });
 
   describe('Update configuration', function () {
@@ -90,7 +131,7 @@ describe('gulp-handyman', function () {
     it('Should get package name from package.json', function () {
 
       var handyPackageName = handyman.getPackageName();
-      
+
       expect(handyPackageName).to.equal(packageName);
     });
 
@@ -108,7 +149,7 @@ describe('gulp-handyman', function () {
       expect(handyman.slugify(input)).to.equal(input);
     });
 
-    it('should replace all spaces with hyphens', function() {
+    it('should replace all spaces with hyphens', function () {
       input = 'input with spaces';
       expect(handyman.slugify(input)).to.equal('input-with-spaces');
     });
@@ -118,7 +159,7 @@ describe('gulp-handyman', function () {
       expect(handyman.slugify(input)).to.equal('input-with-capital-characters');
     });
 
-    it('should strip out non-alpha characters', function() {
+    it('should strip out non-alpha characters', function () {
       input = 'input with & some % special characters';
       expect(handyman.slugify(input)).to.equal('input-with-some-special-characters');
     });
