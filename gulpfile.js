@@ -12,9 +12,16 @@ var config = {
   ]
 };
 
-gulp.task('build', function() {
+gulp.task('test', ['lint'], function() {
   return gulp
     .src(config.jsFiles)
-    .pipe(validatePipeline.validateJS())
     .pipe(testPipeline.test());
 });
+
+gulp.task('lint', function() {
+  return gulp
+    .src(config.jsFiles)
+    .pipe(validatePipeline.validateJS());
+});
+
+gulp.task('build', ['test']);
