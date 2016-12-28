@@ -44,6 +44,7 @@
     "chai": "3.4.0",
     "pipeline-test-node": "1.0.1",
     "pipeline-validate-js": "1.0.0-rc3",
-    "sinon": "1.17.2"
+    "sinon": "1.17.2",
+    "sinon-chai": "2.8.0"
   }
 }
