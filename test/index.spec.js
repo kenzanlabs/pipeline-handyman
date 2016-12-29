@@ -54,7 +54,7 @@ describe('gulp-handyman', function () {
         var spy = sinon.spy(del, 'sync');
         var opts = { dryRun: true };
 
-        handyman.cleanSync([dir], { dryRun: true });
+        handyman.cleanSync([dir], opts);
 
         expect(spy).to.have.been.calledWith(sinon.match.array, opts);
       });
