@@ -19,13 +19,33 @@ Gulp pipeline that provides several utility methods to facilitate the creation o
 
 ### clean
 
-This functions provides a way to delete directories synchonrously, by passing an array of globs.
+#### Asynchronous
+
+This function provides a way to delete directories asynchronously, by passing an array of globs.
 
 ```javascript
 var handyman = require('pipeline-handyman');
 
-handyman.clean(['.dest/'], doneCallbackFunction);
+handyman.clean(['./dest'])
+  .then(function (arrayOfDeletedFilePaths) {
+    // do something after files are deleted
+  })
+  .catch(function (err) {
+    // do something with an error
+  });
 ```
+
+
+#### Synchronous
+
+This function provides a way to delete directories synchronously, by passing an array of globs.
+
+```javascript
+var handyman = require('pipeline-handyman');
+
+handyman.cleanSync(['./dest']); // returns an array of file paths that were removed.
+```
+
 
 ### getPackageName
 
