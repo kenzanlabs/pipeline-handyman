@@ -1,3 +1,8 @@
+# Depreciation Notice
+
+23 January 2019
+This project has been depreciated and is no longer maintained.
+
 ## pipeline-handyman
 
 
